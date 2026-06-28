@@ -22,7 +22,6 @@ int main() {
         gpio_set_dir(i, GPIO_IN);
         gpio_pull_up(i);
     }
-    stdio_init_all();
     while(1) {
         // quad decode
         uint32_t in = gpio_get_all();
