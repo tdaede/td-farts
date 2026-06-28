@@ -25,8 +25,9 @@ int main() {
     stdio_init_all();
     while(1) {
         // quad decode
-        uint8_t p1_a = gpio_get(16);
-        uint8_t p1_b = gpio_get(17);
+        uint32_t in = gpio_get_all();
+        uint8_t p1_a = (in >> 16) & 1;
+        uint8_t p1_b = (in >> 17) & 1;
         if (p1_a ^ p1_b ^ p1_a_prev ^ p1_b_prev) {
             if (p1_a ^ p1_b_prev) {
                 p1_counter++;
