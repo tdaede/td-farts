@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+
+uint8_t p1_counter = 0;
+uint8_t p1_a_prev = 0;
+uint8_t p1_b_prev = 0;
+
+int main() {
+    for (int i = 0; i < 16; i++) {
+        gpio_init(i);
+        gpio_set_dir(i, GPIO_IN);
+        gpio_pull_up(i);
+        gpio_put(i, 0);
+    }
+    for (int i = 16; i < 20; i++) {
+        gpio_init(i);
+        gpio_set_dir(i, GPIO_IN);
+        gpio_pull_up(i);
+    }
+    stdio_init_all();
+    while(1) {
+        // quad decode
+        uint8_t p1_a = gpio_get(16);
+        uint8_t p1_b = gpio_get(17);
+        if (p1_a ^ p1_b ^ p1_a_prev ^ p1_b_prev) {
+            if (p1_a ^ p1_b_prev) {
+                p1_counter++;
+            } else {
+                p1_counter--;
+            }
+        }
+        p1_a_prev = p1_a;
+        p1_b_prev = p1_b;
+        // output
+        for (int i = 0; i < 8; i++) {
+            if (p1_counter & (1<<i)) {
+                gpio_set_dir(i, GPIO_IN);
+            } else {
+                gpio_set_dir(i, GPIO_OUT);
+            }
+        }
+        //printf("%d\n", p1_counter);
+        //sleep_ms(10);
+    }
+    return 0;
+}
