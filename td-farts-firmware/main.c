@@ -8,7 +8,7 @@ uint8_t p1_b_prev = 0;
 int main() {
     for (int i = 0; i < 16; i++) {
         gpio_init(i);
-        gpio_set_dir(i, GPIO_IN);
+        gpio_set_dir(i, GPIO_OUT);
         gpio_pull_up(i);
         gpio_put(i, 0);
     }
@@ -32,15 +32,8 @@ int main() {
         p1_a_prev = p1_a;
         p1_b_prev = p1_b;
         // output
-        for (int i = 0; i < 8; i++) {
-            if (p1_counter & (1<<i)) {
-                gpio_set_dir(i, GPIO_IN);
-            } else {
-                gpio_set_dir(i, GPIO_OUT);
-            }
-        }
-        //printf("%d\n", p1_counter);
-        //sleep_ms(10);
+        uint8_t p1_out = p1_counter;
+        gpio_put_masked(0xFF, p1_out);
     }
     return 0;
 }
