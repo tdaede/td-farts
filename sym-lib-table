@@ -1,0 +1,4 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "td-io") (type "KiCad") (uri "/home/thomas/sandbox/td-io/td-io.kicad_sym") (options "") (descr ""))
+)
